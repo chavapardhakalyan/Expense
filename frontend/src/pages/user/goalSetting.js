@@ -226,7 +226,20 @@ const GoalSetting = () => {
           <ErrorMessage message={errors.goalPrice} />
           <input type="date" value={goalDate} onChange={(e) => handleInputChange('goalDate', e.target.value)} className="goal-input-field" min={new Date().toISOString().split("T")[0]} style={{ cursor: "pointer" }} />
           <ErrorMessage message={errors.goalDate} />
-          <button onClick={editingGoal ? handleSaveEditedGoal : handleAddGoal} className="add-goal-btn" style={{ backgroundColor: "#4389df", borderRadius: "25px" }}>{editingGoal ? "Save Changes" : "Add Goal"}</button>
+          <button
+            onClick={editingGoal ? handleSaveEditedGoal : handleAddGoal}
+            className="add-goal-btn"
+            style={{ backgroundColor: "#4389df", borderRadius: "25px" }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = 'green';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = '#007bff';
+            }}
+          >
+            {editingGoal ? "Save Changes" : "Add Goal"}
+          </button>
+
         </div>
         <h2 className="goal-list-title">Your Goals</h2>
         <ul className="goal-list">

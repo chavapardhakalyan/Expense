@@ -45,23 +45,23 @@ function Dashboard() {
     const generateReport = async () => {
         const transactions = await fetchTransactionHistory(AuthService.getCurrentUser().email, currentMonth.id);
         const doc = new jsPDF();
-    
+
         doc.setFont("helvetica", "bold");
         doc.setFontSize(22);
         doc.setTextColor(0, 0, 0);
         doc.text(`Financial Report - ${currentMonth.monthName} ${currentMonth.year}`, 10, 20);
-    
+
         const currentTime = new Date().toLocaleTimeString();
         const currentDate = new Date().toLocaleDateString('en-GB');
         doc.setFont("helvetica", "normal");
         doc.setFontSize(12);
         doc.setTextColor(0, 0, 0);
         doc.text(`Generated on: ${currentDate} at ${currentTime}`, 10, 30);
-    
+
         doc.setDrawColor(0);
         doc.setLineWidth(0.5);
         doc.line(10, 35, 200, 35);
-    
+
         doc.setFontSize(16);
         doc.setTextColor(0, 102, 204);
         doc.text("Dashboard Overview", 10, 45);
@@ -74,15 +74,15 @@ function Dashboard() {
             { label: "Cash in Hand", value: `${cash_in_hand}` },
             { label: "Number of Transactions", value: `${no_of_transactions}` },
         ];
-    
+
         let yOffset = 55;
         overviewData.forEach((item) => {
             doc.text(`${item.label}: ${item.value}`, 10, yOffset);
             yOffset += 10;
         });
-    
+
         doc.line(10, yOffset + 5, 200, yOffset + 5);
-    
+
         yOffset += 15;
         doc.setFontSize(16);
         doc.setTextColor(0, 102, 204);
@@ -94,15 +94,15 @@ function Dashboard() {
             { label: "Budget Amount", value: `${budgetAmount}` },
             { label: "Remaining Budget", value: `${remainingBudget}` },
         ];
-    
+
         yOffset += 10;
         budgetData.forEach((item) => {
             doc.text(`${item.label}: ${item.value}`, 10, yOffset);
             yOffset += 10;
         });
-    
+
         doc.line(10, yOffset + 5, 200, yOffset + 5);
-    
+
         try {
             const canvas = await html2canvas(chartRef.current);
             const imgData = canvas.toDataURL('image/png');
@@ -110,11 +110,11 @@ function Dashboard() {
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
             const x = (doc.internal.pageSize.getWidth() - imgWidth) / 2;
             const chartYOffset = yOffset + 30;
-    
+
             doc.setFontSize(16);
             doc.setTextColor(0, 102, 204);
             doc.text("Category Expense Chart", 10, chartYOffset - 10);
-    
+
             doc.addImage(imgData, 'PNG', x, chartYOffset, imgWidth, imgHeight);
             yOffset = chartYOffset + imgHeight + 10;
         } catch (error) {
@@ -123,7 +123,7 @@ function Dashboard() {
 
         doc.addPage();
         const headingText = `Transaction History - ${currentMonth.monthName} ${currentMonth.year}`;
-    
+
         doc.setFontSize(22);
         doc.setFont("helvetica", "bold");
         doc.setTextColor(0, 0, 0);
@@ -138,7 +138,7 @@ function Dashboard() {
                 transaction.amount.toString()
             ];
         });
-    
+
         doc.autoTable({
             startY: 40,
             head: [columns],
@@ -166,7 +166,7 @@ function Dashboard() {
                 3: { cellWidth: 35 },
             },
         });
-    
+
         doc.save(`${currentMonth.monthName}-${currentMonth.year}-financial-report.pdf`);
         toast.success(`Report for ${currentMonth.monthName} ${currentMonth.year} has been generated!`);
     };

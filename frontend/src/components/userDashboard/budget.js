@@ -3,27 +3,27 @@ import { useForm } from 'react-hook-form';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import '../../assets/styles/transactionList.css'
 
-function Budget({totalExpense, budgetAmount, saveBudget, currentMonth}) {
+function Budget({ totalExpense, budgetAmount, saveBudget, currentMonth }) {
 
     const { register, handleSubmit, reset, formState } = useForm();
     const [formToggle, setFormToggle] = useState(false)
-    const balance = (budgetAmount-totalExpense < 0) ? 0 : budgetAmount-totalExpense
+    const balance = (budgetAmount - totalExpense < 0) ? 0 : budgetAmount - totalExpense
 
     const toggleForm = (e) => {
         e.preventDefault()
         setFormToggle(!formToggle)
-        reset({amount: budgetAmount})
+        reset({ amount: budgetAmount })
     }
 
     const onSubmit = (formData) => {
         saveBudget(formData)
         setFormToggle(!formToggle)
-        reset({amount: budgetAmount})
+        reset({ amount: budgetAmount })
     }
 
     const data2 = [
         { name: 'Spent', value: totalExpense },
-        { name: 'Balance', value:  balance}
+        { name: 'Balance', value: balance }
     ];
 
     const COLORS2 = ["#ff6464", "#53d37d"];
@@ -32,9 +32,9 @@ function Budget({totalExpense, budgetAmount, saveBudget, currentMonth}) {
         <>
             <div className='chart'>
                 <div className="chart-top">
-                    <h2>Budget: {budgetAmount}</h2> 
+                    <h2>Budget: {budgetAmount}</h2>
                     {
-                        (currentMonth.id === new Date().getMonth() + 1) && ( <button onClick={toggleForm}>Edit</button> )
+                        (currentMonth.id === new Date().getMonth() + 1) && (<button onClick={toggleForm}>Edit</button>)
                     }
                 </div>
                 <ResponsiveContainer height={220}>
@@ -66,7 +66,7 @@ function Budget({totalExpense, budgetAmount, saveBudget, currentMonth}) {
             <div className={formToggle ? 'budget-form active' : 'budget-form'}>
                 <form className='auth-form t-form' onSubmit={handleSubmit(onSubmit)}>
                     <h1>Budget settings</h1>
-                    <hr/>
+                    <hr />
                     <div className='input-box'>
                         <label>Amount</label><br />
                         <input
@@ -80,8 +80,24 @@ function Budget({totalExpense, budgetAmount, saveBudget, currentMonth}) {
                     </div>
                     <div className='t-btn input-box'>
                         <input type='submit' value="Save"
-                            className="button button-fill" />
-                        <input type='submit' className='button outline' value='Cancel' onClick={(e) => toggleForm(e)} />
+                            className="button button-fill" style={{ cursor: "pointer", transition: "background-color 0.3s ease" }}
+                            onMouseEnter={(e) => e.target.style.backgroundColor = 'green'}
+                            onMouseLeave={(e) => e.target.style.backgroundColor = ''} />
+                        <input
+                            type='submit'
+                            className='button outline'
+                            value='Cancel'
+                            onClick={(e) => toggleForm(e)}
+                            style={{ cursor: "pointer", transition: "background-color 0.3s ease, border-color 0.3s ease" }}
+                            onMouseEnter={(e) => {
+                                e.target.style.backgroundColor = 'red';
+                                e.target.style.color = 'black';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.target.style.backgroundColor = '';
+                            }}
+                        />
+
                     </div>
                 </form>
             </div>

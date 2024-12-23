@@ -42,7 +42,7 @@ function TransactionForm({ categories, onSubmit, isDeleting, isSaving, transacti
                         categories.filter(cat => cat.enabled).map((cat) => {
                             return (
                                 <span key={cat.categoryId}>
-                                    <input  style={{cursor : "pointer"}}
+                                    <input style={{ cursor: "pointer" }}
                                         type='radio'
                                         id={cat.categoryName}
                                         value={cat.categoryId}
@@ -87,7 +87,7 @@ function TransactionForm({ categories, onSubmit, isDeleting, isSaving, transacti
 
             <div className='input-box'>
                 <label>Date</label><br />
-                <input style={{cursor : "pointer"}}
+                <input style={{ cursor: "pointer" }}
                     type='date'
                     value={(date.current === undefined) ? new Date().toISOString().split('T')[0] : date.current}
                     max={new Date().toISOString().split('T')[0]}
@@ -97,19 +97,39 @@ function TransactionForm({ categories, onSubmit, isDeleting, isSaving, transacti
             </div>
 
             <div className='t-btn input-box'>
-                <input  style={{cursor : "pointer"}} type='submit' value={isSaving ? "Saving..." : 'Save transaction'}
-                    className={isSaving ? "button button-fill loading" : "button button-fill"} />
-                <input  style={{cursor : "pointer"}} type='submit' className='button outline' value='Cancel' onClick={(e) => cancelProcess(e)} />
+                <input style={{ cursor: "pointer", transition: "background-color 0.3s ease" }} type='submit' value={isSaving ? "Saving..." : 'Save transaction'}
+                    className={isSaving ? "button button-fill loading" : "button button-fill"}
+                    onMouseEnter={(e) => e.target.style.backgroundColor = 'green'}
+                    onMouseLeave={(e) => e.target.style.backgroundColor = ''} />
+                <input
+                    style={{
+                        cursor: "pointer",
+                        transition: "background-color 0.3s ease, color 0.3s ease"
+                    }}
+                    type='submit'
+                    className='button outline'
+                    value='Cancel'
+                    onClick={(e) => cancelProcess(e)}
+                    onMouseEnter={(e) => {
+                        e.target.style.backgroundColor = 'red';
+                        e.target.style.color = 'black';
+                    }}
+                    onMouseLeave={(e) => {
+                        e.target.style.backgroundColor = '';
+                        e.target.style.color = '';
+                    }}
+                />
+
 
             </div>
             {
                 transaction ?
                     <div className='t-btn input-box'>
-                        <button style={{ backgroundColor: "red", color: "black", cursor: "pointer"}}
+                        <button style={{ backgroundColor: "red", color: "black", cursor: "pointer" }}
                             className={isDeleting ? "button delete loading" : "button delete"}
-                            onClick={(e) => deleteTransaction(e, transaction.transactionId)} 
+                            onClick={(e) => deleteTransaction(e, transaction.transactionId)}
                         >
-                            {isDeleting ? "Deleting..." : 'Delete transaction'} 
+                            {isDeleting ? "Deleting..." : 'Delete transaction'}
                         </button>
                     </div>
                     : <></>
